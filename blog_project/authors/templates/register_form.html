@@ -3,11 +3,11 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="container my-5" style="width: 50%; margin: auto;" >
-    <h1>Add Author Page</h1>
-    <form method="POST" class="mt-5">
+    <h1>{{type | capfirst }} Page</h1>
+    <form method="POST" class="mt-5" novalidate>
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Add Author</button>
+        <button type="submit" class="btn btn-primary">{{type | capfirst }}</button>
     </form>
 </div>
 {% endblock %}

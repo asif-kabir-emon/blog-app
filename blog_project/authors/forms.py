@@ -1,29 +1,18 @@
 from django import forms
-from .models import Author
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
-class AuthorForm(forms.ModelForm):
+class UserRegistrationForm(UserCreationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': True}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': True}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'required': True}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'required': True}))
+    password1 = forms.CharField(label="Password", strip=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text=None)
+    password2 = forms.CharField(label="Password confirmation", strip=False, widget=forms.PasswordInput(attrs={'class': 'form-control'}), help_text=None)
+    
     class Meta:
-        model = Author
-        fields = ['name', 'phone_number', 'bio']
-        labels = {
-            'name': 'Name',
-            'phone_number': 'phone_number',
-            'bio': 'bio',
-        }
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your name'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your bio'}),
-        }
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
         help_texts = {
-        }
-        error_messages = {
-            'name': {
-                'required': 'This field is required.',
-                'max_length': "This author's name is too long."
-            },
-            'phone_number': {
-                'required': 'This field is required.',
-                'max_length': "This phone number is too long."
-            },
+            'username': None,
         }
