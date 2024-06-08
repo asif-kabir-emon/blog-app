@@ -2,6 +2,15 @@
 
 {% block content %}
 <div class="row container my-5 mx-auto">
+    {% if data %}
+        <div class="col-md-12 mb-3">
+            <h3>My Posts: {{data | length}}</h3>
+        </div>
+    {% else %}
+        <div class="col-md-12 mb-3">
+            <h3>No Posts Found</h3>
+        </div>
+    {% endif %}
     {% for post in data %}
         <div class="col-md-4 mb-3 mb-sm-0">
             <div class="card">
@@ -16,6 +25,8 @@
                         {% endfor %}
 
                     </p>
+                    <a href="{% url 'edit_post' post.id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
