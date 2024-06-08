@@ -3,7 +3,7 @@ from categories.models import Category
 from django.contrib.auth.models import User
 
 class Post(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=150)
     text = models.TextField()
     categories = models.ManyToManyField(Category)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

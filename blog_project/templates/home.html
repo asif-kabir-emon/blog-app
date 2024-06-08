@@ -1,24 +1,60 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
 
 {% block content %}
-<div class="row container my-5 mx-auto">
-    {% for post in data %}
-        <div class="col-md-4 mb-3 mb-sm-0">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title" style="height: 50px; overflow: hidden;">{{post.title}}</h5>
-                    <p class="card-text" style="height: 170px; overflow: hidden;">{{post.text}} ...</p>
-                    <p>Author : {{post.author.first_name}} {{post.author.last_name}}</p>
-                    <p>
-                        Category : 
-                        {% for category in post.categories.all %}
-                            <span class="badge text-bg-secondary">{{category.name}}</span>
-                        {% endfor %}
-
-                    </p>
-                </div>
-            </div>
+<div class="container my-5 d-flex flex-column-reverse flex-lg-row d-wrap align-items-center justify-content-between gap-5">
+    <div class="col-lg-6">
+        <h1>Welcome to Django Blog</h1>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus ipsum neque non voluptates. Deserunt facere, nam neque amet sint eaque ipsum consectetur! Nam itaque sunt voluptate. Dicta, ipsum. Possimus, explicabo nostrum non in doloremque hic qui dolores a similique ipsa modi ea quis sint ad eveniet placeat dolor repudiandae dolorum asperiores odio eligendi soluta maxime? Asperiores fuga architecto laudantium iure, illo impedit itaque natus aperiam unde sit libero fugiat ipsum ex quisquam, quam neque excepturi commodi dolorum eos id. Excepturi doloribus consequatur, ab expedita, distinctio tenetur porro exercitationem incidunt quo accusantium culpa sunt, non earum modi cum at esse ullam.
+        </p>
+    </div>
+    <div class="col-lg-6">
+        <div style="margin-left: auto;" class="d-flex justify-content-lg-end">
+            <img src="{% static 'blog_header.jpg' %}" alt="Blog"  width="70%">
         </div>
-    {% endfor %}
+    </div>
+</div>
+
+
+<div class="container my-5 d-flex flex-column flex-md-row d-wrap justify-content-between gap-5 gap-md-1">
+    <div class="col-md-2 bg-white p-3 rounded">
+        <h5>All Categories</h5>
+        {% for category in categories %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="category" id="{{category.id}}">
+            <label class="form-check-label" for="{{category.id}}">
+                <a class="text-decoration-none text-dark" href="{% url 'categories_wise_posts' category.slug %}">{{category.name}}</a>
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-10">
+        <h3 class="mt-1 mb-4 mx-3 px-4 py-2 bg-secondary bg-opacity-50 rounded">{{posts | length}} results found</h3>
+        <div class="row mx-auto">
+            {% for post in posts %}
+                <div class="col-md-4 mb-3 mb-sm-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" style="height: 50px; overflow: hidden;">{{post.title}}</h5>
+                            <p class="card-text" style="height: 170px; overflow: hidden;">{{post.text}} ...</p>
+                            <p>Author : {{post.author.first_name}} {{post.author.last_name}}</p>
+                            <p style="height: 25px; overflow: hidden;">
+                                Category : 
+                                {% for category in post.categories.all %}
+                                    <span class="badge text-bg-secondary">{{category.name}}</span>
+                                {% endfor %}
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
