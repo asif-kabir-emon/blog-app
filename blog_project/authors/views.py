@@ -5,6 +5,9 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.views import LoginView, LogoutView
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 
 def user_registration(request):
     if request.user.is_authenticated:
@@ -74,3 +77,32 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'password_change.html', {'form': form})
+
+
+# Class-based view
+class UserLoginView(LoginView):
+    template_name = 'register_form.html'
+    
+    def get_success_url(self):
+        return reverse_lazy('profile')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Logged in Successful')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid Username or Password')
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["type"] = 'login'
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class UserLogoutView(LogoutView): 
+    template_name = 'log_out.html'
+    http_method_names = ['post', 'options']
+    
+    def get_success_url(self):
+        return reverse_lazy('login')

@@ -18,9 +18,19 @@
     {% for post in data %}
         <div class="col-md-4 mb-3 mb-sm-0">
             <div class="card">
+                {% if post.image %}
+                    <img src="{{post.image.url}}" class="card-img-top" alt="{{post.title}}" style="height: 230px; object-fit: cover;">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center rounded-top" style="height: 230px; background-color: lightgray;">
+                        <p>No Image Found</p>
+                    </div>
+                {% endif %}
+                
                 <div class="card-body">
-                    <h5 class="card-title" style="height: 50px; overflow: hidden;">{{post.title}}</h5>
-                    <p class="card-text" style="height: 170px; overflow: hidden;">{{post.text}} ...</p>
+                    <h5 class="card-title" style="height: 50px; overflow: hidden;">
+                        <a href="{% url 'post_details' post.id %}">{{post.title}}</a>
+                    </h5>
+                    <p class="card-text" style="height: 120px; overflow: hidden;">{{post.text | truncatewords:30}}</p>
                     <p>Author : {{post.author.first_name}} {{post.author.last_name}}</p>
                     <p style="height: 25px; overflow: hidden;">
                         Category : 

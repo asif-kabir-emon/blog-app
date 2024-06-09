@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Post Details
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+    <div class="card m-2 p-3">
+        {% if post.image %}
+            <div class="d-flex align-items-center justify-content-center rounded-top">
+                <img src="{{post.image.url}}"  alt="{{post.title}}" style="width: 50%; ">
+            </div>
+        {% else %}
+            <div class="d-flex align-items-center justify-content-center rounded-top" style="height: 300px; background-color: lightgray;">
+                <p>No Image Found</p>
+            </div>
+        {% endif %}
+        
+        <div class="card-body">
+            <h1 class="card-title">{{post.title}}</h1>
+            <p class="card-text">{{post.text}}</p>
+            <p>Author : {{post.author.first_name}} {{post.author.last_name}}</p>
+            <p>
+                Category : 
+                {% for category in post.categories.all %}
+                    <span class="badge text-bg-secondary">{{category.name}}</span>
+                {% endfor %}
+
+            </p>
+        </div>
+    </div>
+    <div class="card m-2 p-3">
+        <h5>Total Comments: {{comments | length}}</h5>
+        {% for comment in comments %}
+            <div class="card-body border m-2">
+                <p><b>{{comment.name}}</b> {{comment.created_at}}</p>
+                <p>{{comment.text}}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="card m-2 p-3">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{comment_form|crispy}}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Add Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
